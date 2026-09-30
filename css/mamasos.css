@@ -1,0 +1,511 @@
+/* ==========================================================================
+   mamasos.css — MamasOS Terminal & TUI Design System
+   Uses JetBrains Mono, TUI borders, high contrast and terminal aesthetics.
+   ========================================================================== */
+
+:root {
+  --tui-bg: #090d16;
+  --tui-surface: #0f172a;
+  --tui-border: #1e293b;
+  --tui-border-glow: #38bdf820;
+  --tui-text: #e2e8f0;
+  --tui-text-muted: #64748b;
+  --tui-green: #10b981;
+  --tui-green-glow: #10b98133;
+  --tui-cyan: #38bdf8;
+  --tui-amber: #f59e0b;
+  --tui-rose: #f43f5e;
+  --tui-pink: #ec4899;
+}
+
+/* Blank Screen for the intentional "kok mati?" interval */
+.blank-screen {
+  position: fixed;
+  inset: 0;
+  background-color: #000000;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Base TUI Container */
+.tui-app-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  min-height: 100dvh;
+  margin: 0 auto;
+  background-color: var(--tui-bg);
+  color: var(--tui-text);
+  font-family: "JetBrains Mono", "Courier New", Courier, monospace;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  line-height: 1.5;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+}
+
+/* Subtle CRT Scanlines */
+.tui-scanlines {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.25) 50%
+  );
+  background-size: 100% 4px;
+  z-index: 50;
+  opacity: 0.6;
+}
+
+/* TUI Window Box Chrome */
+.tui-window {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  background: var(--tui-surface);
+  border: 1px solid var(--tui-border);
+  box-sizing: border-box;
+}
+
+.tui-window-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: #0b1120;
+  border-bottom: 1px solid var(--tui-border);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  user-select: none;
+  min-height: 48px;
+}
+
+.tui-dot-group {
+  display: flex;
+  gap: 6px;
+}
+
+.tui-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-red { background: #ef4444; }
+.dot-yellow { background: #eab308; }
+.dot-green { background: #22c55e; }
+
+.tui-window-title {
+  color: var(--tui-cyan);
+  text-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
+}
+
+.tui-window-status {
+  color: var(--tui-green);
+  font-size: 0.75rem;
+}
+
+.tui-window-body {
+  flex: 1;
+  padding: 1.25rem 1rem;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ==========================================================================
+   Boot & Diagnostic Sequence Screen
+   ========================================================================== */
+.tui-boot-container {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1rem;
+  min-height: 100dvh;
+  box-sizing: border-box;
+  overflow-y: auto;
+  gap: 1rem;
+}
+
+.tui-scan-header {
+  border-left: 3px solid var(--tui-cyan);
+  padding-left: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.tui-system-tag {
+  color: var(--tui-cyan);
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.05em;
+}
+
+.tui-scan-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.05rem;
+  color: var(--tui-amber);
+}
+
+.tui-spinner {
+  font-weight: 800;
+  color: var(--tui-pink);
+}
+
+.tui-validated-badge {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  padding: 0.6rem 0.85rem;
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+.text-danger {
+  color: #f87171;
+  letter-spacing: 0.05em;
+}
+
+.text-success {
+  color: #4ade80;
+  letter-spacing: 0.05em;
+}
+
+.tui-error-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 0.5rem 0;
+}
+
+.tui-error-item {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0.75rem;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(56, 189, 248, 0.15);
+  border-left: 2px solid var(--tui-rose);
+  border-radius: 4px;
+  font-size: 0.88rem;
+  animation: fadeIn 0.2s ease forwards;
+}
+
+.tui-err-code {
+  color: var(--tui-text-muted);
+  font-size: 0.75rem;
+}
+
+.tui-err-name {
+  color: #fca5a5;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.tui-err-desc {
+  color: #94a3b8;
+  font-size: 0.78rem;
+  margin-top: 0.2rem;
+}
+
+.tui-blank-gap {
+  height: 2.5rem;
+}
+
+.tui-fixing-line {
+  font-size: 1.15rem;
+  color: var(--tui-cyan);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  padding: 0.5rem 0;
+}
+
+.tui-fixing-prefix {
+  color: var(--tui-pink);
+}
+
+.tui-fixed-badge {
+  padding: 0.75rem;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 1rem;
+  text-align: center;
+  animation: pulseGlow 1.5s infinite alternate;
+}
+
+.tui-love-sent {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, rgba(244, 63, 94, 0.12) 0%, rgba(236, 72, 153, 0.12) 100%);
+  border: 1px solid rgba(244, 63, 94, 0.4);
+  border-radius: 6px;
+  text-align: center;
+  color: #fda4af;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.4;
+}
+
+.tui-love-title {
+  font-size: 0.95rem;
+}
+
+.tui-love-sub {
+  font-size: 1.15rem;
+  color: #ff6b8b;
+  margin-top: 0.25rem;
+}
+
+.tui-continue-prompt {
+  margin-top: 1.5rem;
+  padding-bottom: 2rem;
+  text-align: center;
+}
+
+.tui-tap-anywhere {
+  background: transparent;
+  border: 1px dashed var(--tui-cyan);
+  color: var(--tui-cyan);
+  padding: 0.85rem 1.25rem;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  min-height: 48px;
+  touch-action: manipulation;
+  transition: all 0.2s ease;
+  animation: borderBlink 1.2s infinite;
+}
+
+.tui-tap-anywhere:active {
+  background: rgba(56, 189, 248, 0.2);
+}
+
+/* ==========================================================================
+   Dashboard Screen & Menu Grid
+   ========================================================================== */
+.tui-banner {
+  margin-bottom: 1.25rem;
+  text-align: center;
+}
+
+.tui-ascii-logo {
+  font-size: clamp(8px, 2.5vw, 11px);
+  line-height: 1.15;
+  color: var(--tui-pink);
+  text-shadow: 0 0 10px rgba(236, 72, 153, 0.4);
+  margin: 0.5rem auto 1rem;
+  overflow: hidden;
+  user-select: none;
+}
+
+.tui-prompt-line {
+  font-size: 0.85rem;
+  color: var(--tui-cyan);
+  font-weight: 600;
+  text-align: left;
+  padding: 0.25rem 0;
+  border-bottom: 1px solid var(--tui-border);
+  margin-bottom: 1rem;
+}
+
+.prompt-sym {
+  color: var(--tui-green);
+}
+
+.tui-menu-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-bottom: 1.5rem;
+}
+
+.tui-menu-card {
+  appearance: none;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid var(--tui-border);
+  border-radius: 6px;
+  padding: 1rem;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  color: var(--tui-text);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.15s ease;
+  min-height: 64px;
+  touch-action: manipulation;
+  position: relative;
+  overflow: hidden;
+}
+
+.tui-menu-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--tui-cyan);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.tui-menu-card:hover,
+.tui-menu-card:active {
+  border-color: var(--tui-cyan);
+  background: rgba(30, 41, 59, 0.9);
+  transform: translateY(-1px);
+}
+
+.tui-menu-card:active::before,
+.tui-menu-card:focus::before {
+  opacity: 1;
+}
+
+.tui-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.35rem;
+}
+
+.tui-card-index {
+  color: var(--tui-green);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.tui-card-name {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  flex: 1;
+  margin: 0 0.5rem;
+}
+
+.tui-card-badge {
+  font-size: 0.65rem;
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+  background: rgba(56, 189, 248, 0.15);
+  color: var(--tui-cyan);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+.tui-card-sub {
+  font-size: 0.78rem;
+  color: var(--tui-text-muted);
+}
+
+.tui-dashboard-footer {
+  margin-top: auto;
+  padding: 1rem 0;
+  border-top: 1px solid var(--tui-border);
+  font-size: 0.75rem;
+  text-align: center;
+  color: var(--tui-text-muted);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.tui-heart-sig {
+  color: var(--tui-pink);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   Reusable Message Screen
+   ========================================================================== */
+.tui-back-btn {
+  appearance: none;
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid var(--tui-border);
+  color: var(--tui-cyan);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.45rem 0.85rem;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 44px;
+  min-width: 72px;
+  touch-action: manipulation;
+  transition: all 0.15s ease;
+}
+
+.tui-back-btn:active {
+  background: var(--tui-cyan);
+  color: #000000;
+}
+
+.tui-msg-meta {
+  margin-bottom: 1rem;
+}
+
+.tui-msg-subtitle {
+  color: var(--tui-green);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.35rem;
+}
+
+.tui-separator {
+  color: var(--tui-border);
+  font-size: 0.75rem;
+  overflow: hidden;
+  user-select: none;
+}
+
+.tui-msg-scroll-area {
+  flex: 1;
+  background: rgba(10, 15, 26, 0.7);
+  border: 1px solid var(--tui-border);
+  border-radius: 6px;
+  padding: 1.25rem 1rem;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: #cbd5e1;
+  white-space: pre-wrap;
+  word-break: break-word;
+  cursor: pointer;
+}
+
+.tui-msg-content {
+  display: inline;
+}
+
+.tui-cursor {
+  display: inline-block;
+  color: var(--tui-pink);
+  font-weight: 800;
+  margin-left: 2px;
+}
+
+.tui-cursor.blinking {
+  animation: blinkCursor 0.8s infinite;
+}
+
+.tui-msg-footer {
+  margin-top: 0.75rem;
+  text-align: center;
+  font-size: 0.72rem;
+  color: var(--tui-text-muted);
+}

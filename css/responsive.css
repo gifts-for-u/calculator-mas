@@ -1,0 +1,131 @@
+/* ==========================================================================
+   responsive.css — Mobile-First Responsiveness & Viewport Adapters
+   Targets 360px, 375px, 390px, 412px and graceful desktop presentation.
+   ========================================================================== */
+
+/* Universal Layout Foundations */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  background-color: #030712;
+  color: #1e293b;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Touch Action Optimizations */
+button,
+input,
+select,
+textarea,
+a {
+  touch-action: manipulation;
+}
+
+/* Base Viewport Container */
+#app-root {
+  width: 100%;
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  background-color: #030712;
+}
+
+/* Small Viewport Optimization (360px - 374px) */
+@media screen and (max-width: 374px) {
+  .calc-app-wrapper {
+    padding: 0.75rem 0.5rem env(safe-area-inset-bottom, 0.75rem);
+  }
+
+  .calc-btn {
+    font-size: 1.25rem;
+    border-radius: 1.15rem;
+  }
+
+  .calc-btn-op {
+    font-size: 1.4rem;
+  }
+
+  .calc-current {
+    font-size: 2.5rem;
+  }
+
+  .modal-box {
+    padding: 1.25rem 1rem;
+    border-radius: 1.25rem;
+  }
+
+  .modal-question {
+    font-size: 0.98rem;
+  }
+
+  .tui-window-body {
+    padding: 1rem 0.75rem;
+  }
+
+  .tui-ascii-logo {
+    font-size: 7.5px;
+  }
+
+  .tui-card-name {
+    font-size: 0.92rem;
+  }
+}
+
+/* Standard Mobile Viewports (375px - 414px) */
+@media screen and (min-width: 375px) and (max-width: 430px) {
+  .calc-app-wrapper,
+  .tui-app-wrapper {
+    max-width: 100%;
+    min-height: 100dvh;
+  }
+}
+
+/* Desktop & Tablet Fallback */
+@media screen and (min-width: 640px) {
+  body {
+    background: radial-gradient(circle at 50% 30%, #1e1b4b 0%, #030712 70%);
+  }
+
+  #app-root {
+    padding: 2rem 1rem;
+    align-items: center;
+  }
+
+  .calc-app-wrapper {
+    min-height: 740px;
+    height: 740px;
+    border-radius: 2.25rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 12px #0f172a, 0 0 0 14px #334155;
+  }
+
+  .tui-app-wrapper {
+    min-height: 740px;
+    height: 740px;
+    border-radius: 1.5rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 0 10px #1e293b, 0 0 0 12px #38bdf840;
+    overflow: hidden;
+  }
+
+  .tui-window {
+    min-height: 100%;
+    height: 100%;
+  }
+
+  .tui-boot-container {
+    min-height: 100%;
+    height: 100%;
+  }
+}

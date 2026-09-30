@@ -1,0 +1,116 @@
+/* ==========================================================================
+   animations.css — Pacing, Micro-interactions & Accessible Transitions
+   ========================================================================== */
+
+/* Universal Utility: Hidden */
+.hidden {
+  display: none !important;
+}
+
+/* Modal Error Shake */
+@keyframes shakeAnimation {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+
+.shake-animation {
+  animation: shakeAnimation 0.35s ease;
+}
+
+/* Calculator Powering Off (CRT / Device Shutdown) */
+@keyframes calcShutdown {
+  0% {
+    opacity: 1;
+    filter: brightness(1);
+    transform: scale(1);
+  }
+  30% {
+    opacity: 0.8;
+    filter: brightness(1.6) contrast(1.4);
+    transform: scale(0.99);
+  }
+  60% {
+    opacity: 0.4;
+    filter: brightness(0.4) invert(0.2);
+    transform: scale(0.98);
+  }
+  100% {
+    opacity: 0;
+    filter: brightness(0);
+    transform: scale(0.95);
+  }
+}
+
+.calc-powering-off {
+  animation: calcShutdown 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  pointer-events: none;
+}
+
+/* Simple Fade In */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease forwards;
+}
+
+/* Blinking Terminal Cursor */
+@keyframes blinkCursor {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+/* Pulse Glow for Fixed Badge */
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 5px rgba(16, 185, 129, 0.2);
+  }
+  100% {
+    box-shadow: 0 0 16px rgba(16, 185, 129, 0.4);
+  }
+}
+
+/* Border Blink for Tap Prompt */
+@keyframes borderBlink {
+  0%, 100% {
+    border-color: rgba(56, 189, 248, 0.7);
+    color: #38bdf8;
+  }
+  50% {
+    border-color: rgba(56, 189, 248, 0.2);
+    color: rgba(56, 189, 248, 0.5);
+  }
+}
+
+/* ==========================================================================
+   Prefers-Reduced-Motion Accessibility Support
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .calc-powering-off {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+
+  .tui-cursor.blinking {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+}

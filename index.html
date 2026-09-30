@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Calculator</title>
+  <meta name="description" content="A clean, minimalist, and modern web calculator.">
+  <meta name="theme-color" content="#f8fafc">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧮</text></svg>">
+
+  <!-- Google Fonts: Plus Jakarta Sans (Modern Calculator) & JetBrains Mono (MamasOS TUI) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/calculator.css">
+  <link rel="stylesheet" href="css/mamasos.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body data-app-state="CALCULATOR">
+
+  <main id="app-root">
+
+    <!-- ====================================================================
+         SCREEN 1: MODERN CALCULATOR (DISGUISE)
+         ==================================================================== -->
+    <section id="screen-calculator" class="calc-app-wrapper" aria-label="Modern Calculator">
+      <div class="calc-cute-decor" aria-hidden="true"></div>
+
+      <!-- Top bar -->
+      <header class="calc-top-bar">
+        <div class="calc-brand">
+          <span class="calc-brand-sparkle">✦</span>
+          <span>CALC</span>
+        </div>
+        <button id="audio-toggle" class="sound-toggle-btn" type="button" aria-label="Toggle Sound">
+          SOUND: ON
+        </button>
+      </header>
+
+      <!-- Calculator Display -->
+      <section class="calc-screen-panel" aria-live="polite">
+        <div id="calc-expression" class="calc-expression" aria-label="Current Expression"></div>
+        <div id="calc-current" class="calc-current" aria-label="Display Result">0</div>
+      </section>
+
+      <!-- Calculator Keypad -->
+      <section id="calc-keypad" class="calc-keypad" aria-label="Calculator Keypad">
+        <!-- Row 1 -->
+        <button type="button" class="calc-btn calc-btn-fn" data-action="clear" aria-label="Clear">C</button>
+        <button type="button" class="calc-btn calc-btn-fn" data-action="sign" aria-label="Change Sign">±</button>
+        <button type="button" class="calc-btn calc-btn-fn" data-action="percent" aria-label="Percentage">%</button>
+        <button type="button" class="calc-btn calc-btn-op" data-action="operator" data-value="divide" aria-label="Divide">÷</button>
+
+        <!-- Row 2 -->
+        <button type="button" class="calc-btn calc-btn-num" data-action="number" data-value="7">7</button>
+        <button type="button" class="calc-btn calc-btn-num" data-action="number" data-value="8">8</button>
+        <button type="button" class="calc-btn calc-btn-num" data-action="number" data-value="9">9</button>
+        <button type="button" class="calc-btn calc-btn-op" data-action="operator" data-value="multiply" aria-label="Multiply">×</button>
+
+        <!-- Row 3 -->
+        <button type="button" class="calc-btn calc-btn-num" data-action="number" data-value="4">4</button>
+        <button type="button" class="calc-btn calc-btn-num" data-action="number" data-value="5">5</button>
+        <button type="button" class="calc-btn calc-btn-num" data-action="number" data-value="6">6</button>
+        <button type="button" class="calc-btn calc-btn-op" data-action="operator" data-value="subtract" aria-label="Subtract">−</button>
+
+        <!-- Row 4 -->
+        <button type="button" class="calc-btn calc-btn-num" data-action="number" data-value="1">1</button>
+        <button type="button" class="calc-btn calc-btn-num" data-action="number" data-value="2">2</button>
+        <button type="button" class="calc-btn calc-btn-num" data-action="number" data-value="3">3</button>
+        <button type="button" class="calc-btn calc-btn-op" data-action="operator" data-value="add" aria-label="Add">+</button>
+
+        <!-- Row 5 -->
+        <button type="button" class="calc-btn calc-btn-num" data-action="number" data-value="0">0</button>
+        <button type="button" class="calc-btn calc-btn-num" data-action="decimal" aria-label="Decimal point">.</button>
+        <button type="button" class="calc-btn calc-btn-fn" data-action="clear" aria-label="Clear entry">AC</button>
+        <button type="button" class="calc-btn calc-btn-eq" data-action="equals" aria-label="Equals">=</button>
+      </section>
+    </section>
+
+    <!-- ====================================================================
+         MODAL: ANNIVERSARY SECRET PROMPT (Triggers on 3rd '=')
+         ==================================================================== -->
+    <div id="modal-anniversary" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modal-question-text">
+      <div class="modal-box">
+        <div class="modal-icon-badge" aria-hidden="true">♥</div>
+        <p id="modal-question-text" class="modal-question">
+          eh coba masukin tanggal jadian kita deh sayang
+        </p>
+
+        <button type="button" id="anniversary-submit" class="modal-submit-btn">
+          OK
+        </button>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         TRANSITION: BLANK SCREEN ("lah kok mati?")
+         ==================================================================== -->
+    <div id="screen-blank" class="blank-screen hidden" aria-hidden="true"></div>
+
+    <!-- ====================================================================
+         SCREEN 2: MAMASOS BOOT SEQUENCE & ERROR DIAGNOSTICS
+         ==================================================================== -->
+    <section id="screen-boot" class="tui-app-wrapper hidden" aria-label="MamasOS Terminal Boot">
+      <div class="tui-scanlines" aria-hidden="true"></div>
+      <div id="boot-logs" class="tui-boot-container" aria-live="polite"></div>
+    </section>
+
+    <!-- ====================================================================
+         SCREEN 3: MAMASOS DASHBOARD (4 MODULES)
+         ==================================================================== -->
+    <section id="screen-dashboard" class="tui-app-wrapper hidden" aria-label="MamasOS Dashboard">
+      <div class="tui-scanlines" aria-hidden="true"></div>
+      <!-- Rendered dynamically by js/dashboard.js -->
+    </section>
+
+    <!-- ====================================================================
+         SCREEN 4: REUSABLE MESSAGE SCREEN
+         ==================================================================== -->
+    <section id="screen-message" class="tui-app-wrapper hidden" aria-label="MamasOS Message View">
+      <div class="tui-scanlines" aria-hidden="true"></div>
+      <!-- Rendered dynamically by js/dashboard.js -->
+    </section>
+
+  </main>
+
+  <!-- JavaScript Entry Point -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
